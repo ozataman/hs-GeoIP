@@ -8,8 +8,9 @@ Maintainer:          ozataman@gmail.com
 Category:            Data
 Build-type:          Simple
 Description:
-  This library provides fast, pure Haskell bindings to MaxMind's GeoIPCity
-  IP-based geolocation C API.  
+
+  This library provides fast, idiomatic Haskell bindings to MaxMind's
+  GeoIPCity IP-based geolocation C API.
 
   .
 
@@ -17,9 +18,8 @@ Description:
 
   .
   
-  To get started, you can simply download the
-  latest binary database distribution from:
-  <http://www.maxmind.com/app/geolitecity>
+  To get started, you can download the latest binary database
+  distribution from: <http://www.maxmind.com/app/geolitecity>
 
 Cabal-version:       >=1.6
 extra-source-files:
@@ -32,7 +32,7 @@ Library
   build-tools: hsc2hs
   ghc-options: -Wall
   build-depends:
-      base >= 4
+      base >= 4 && < 5
     , bytestring >= 0.9
     , deepseq
 
