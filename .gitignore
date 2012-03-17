@@ -1,0 +1,4 @@
+*.dat
+dist
+src/Data/Geolocation/GeoIP.hs
+*DS*
