@@ -22,6 +22,8 @@ module Data.Geolocation.GeoIP
     , openGeoDB
     , geoLocateByIPAddress
     , geoLocateByIPNum
+    , geoStringByIPAddress
+    , geoStringByIPNum
     , mkIpNum
     ) where
 
@@ -155,17 +157,35 @@ openGeoDB ops dbname = withCString dbname $ \dbname' -> do
 -- | Geo-locate by given IP Adress
 --
 -- > geoLocateByIPAddress db "123.123.123.123"
-geoLocateByIPAddress :: GeoDB -> ByteString -> Maybe GeoIPRecord
-geoLocateByIPAddress db ip = mkIpNum ip >>= geoLocateByIPNum db 
+geoLocateByIPAddress :: GeoDB -> ByteString -> IO (Maybe GeoIPRecord)
+geoLocateByIPAddress db ip =
+  case mkIpNum ip of
+    Nothing -> return Nothing
+    Just inum -> geoLocateByIPNum db inum
 
+geoStringByIPAddress :: GeoDB -> ByteString -> IO (Maybe ByteString)
+geoStringByIPAddress db ip = 
+  case mkIpNum ip of
+    Nothing -> return Nothing
+    Just inum -> geoStringByIPNum db inum
+
+geoStringByIPNum :: GeoDB -> Integer -> IO (Maybe ByteString)
+geoStringByIPNum (GeoDB db) ip =
+  withForeignPtr db $ \db' -> do
+    ptr <- c_GeoIP_name_by_ipnum db' (fromIntegral ip)
+    str <- if nullPtr == ptr
+           then return Nothing
+           else let x = packCString ptr in x `seq` fmap Just x
+    free ptr
+    return str
 
 ------------------------------------------------------------------------------
 -- | Geo-locate by given IP number. Call 'mkIpNum' on a 'String' ip address to
 -- convert to IP number.
 --
 -- > geoLocateByIPNum db 12336939327338
-geoLocateByIPNum :: GeoDB -> Integer -> Maybe GeoIPRecord
-geoLocateByIPNum (GeoDB db) ip = unsafePerformIO $ do
+geoLocateByIPNum :: GeoDB -> Integer -> IO (Maybe GeoIPRecord)
+geoLocateByIPNum (GeoDB db) ip =
   withForeignPtr db $ \db' -> do
     ptr <- c_GeoIP_record_by_ipnum db' (fromIntegral ip)
     rec <- peekGeoIPRecord ptr
@@ -203,6 +223,11 @@ foreign import ccall safe "GeoIPCity.h GeoIP_record_by_ipnum"
     -> CULong
     -> IO (Ptr GeoIPRecord)
 
+foreign import ccall safe "GeoIP.h GeoIP_name_by_ipnum"
+  c_GeoIP_name_by_ipnum
+    :: Ptr GeoIP
+    -> CULong
+    -> IO CString
 
 foreign import ccall safe "GeoIPCity.h &GeoIPRecord_delete"
   c_GeoIPRecord_delete_funPtr
