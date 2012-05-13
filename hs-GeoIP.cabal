@@ -5,12 +5,18 @@ License:             BSD3
 License-file:        LICENSE
 Author:              Ozgun Ataman
 Maintainer:          ozataman@gmail.com
+Homepage:            http://github.com/ozataman/hs-GeoIP
 Category:            Data
 Build-type:          Simple
 Description:
 
   This library provides fast, idiomatic Haskell bindings to MaxMind's
   GeoIPCity IP-based geolocation C API.
+
+  .
+
+  Make sure you have the MaxMind C API installed before installing
+  this library, as it depends on the C API.
 
   .
 

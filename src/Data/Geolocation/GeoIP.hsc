@@ -6,7 +6,7 @@ module Data.Geolocation.GeoIP
 
     (
     -- * Types
-    GeoDB
+      GeoDB
     , GeoIPOption
     , combineOptions
     , standard
