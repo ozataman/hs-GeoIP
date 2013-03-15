@@ -1,5 +1,5 @@
 Name:                hs-GeoIP
-Version:             0.2
+Version:             0.3
 Synopsis:            Haskell bindings to the MaxMind GeoIPCity database via the C library
 License:             BSD3
 License-file:        LICENSE

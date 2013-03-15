@@ -87,7 +87,7 @@ peekGeoIPRecord p =
           <*> fmap tofloat (#{peek GeoIPRecord, longitude} p)
           <*> fmap toInt (#{peek GeoIPRecord, area_code} p)
           <*> peekBS (#{peek GeoIPRecord, continent_code})
-          <*> fmap toInt (#{peek GeoIPRecord, accuracy_radius} p)
+          <*> pure 0
     peekBS f = do
       !sptr <- f p
       case nullPtr == sptr of
