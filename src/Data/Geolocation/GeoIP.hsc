@@ -143,7 +143,7 @@ mkIpNum x = case valid of
 --
 -- This would open a file and cache in memory:
 --
--- > openGeoDB "GeoCity.dat" memory_cache
+-- > openGeoDB memory_cache "GeoCity.dat"
 -- 
 -- The memory on the C side is automatically freed by the Haskell GC when
 -- appropriate.

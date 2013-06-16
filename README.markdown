@@ -9,7 +9,7 @@ a flavor of Haskell introduced for safe operation.
 Here is an example session:
 
     geoLookup = do
-      g <- openGeoDB  "GeoLiteCity.dat" memory_cache
+      g <- openGeoDB  memory_cache "GeoLiteCity.dat"
       geoLocateByIPAddress g "5.5.5.5"
 
 
